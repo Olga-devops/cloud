@@ -1,38 +1,61 @@
 # Default values for chart-cloud.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+chart-cloud:
+  replicaCount: 1
 
-replicaCount: 1
+  image:
+    repository: ${deployment_image}
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
 
-image:
-  repository: ${deployment_image}
-  pullPolicy: Always
+mysql:
+
+  image:
+    repository: fsadykov/centos_mysql
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 3306
+    serviceName: chart-cloud-mysql-service
 
 nameOverride: ""
 fullnameOverride: ""
 
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 80
-ingress:
-  enabled: true
-  annotations: 
+  
+  ingress:
+    enabled: true
+    annotations: 
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: letsencrypt-prod
-  path: /
-  hosts:
+    path: /
+    hosts:
     - ${deployment_endpoint}
-  tls: 
+    tls: 
     - secretName: cloud-tls
       hosts:
        - ${deployment_endpoint}
 
-env_vars:
-  MYSQL_USER: ${mysql_user}
-  MYSQL_HOST: ${mysql_host}
-  MYSQL_DATABASE: ${mysql_database}
-  MYSQL_PASSWORD: ${mysql_password}
+
+
+globalEnvironments:
+  enabled: true
+  environments:
+
+  - name: MYSQL_USER
+    value: ${mysql_user}
+
+  - name: MYSQL_DATABASE
+    value: ${mysql_database}
+
+  - name: MYSQL_PASSWORD
+    value: ${mysql_password}
+  - name: MYSQL_HOST
+    value: ${mysql_host}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

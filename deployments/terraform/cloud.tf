@@ -6,19 +6,11 @@ module "nextcloud_deploy" {
   deployment_endpoint    =  "${lookup(var.deployment_endpoint, "${var.deployment_environment}")}"
   deployment_path        = "chart-cloud"
 
-    template_custom_vars = {
+  template_custom_vars = {
     deployment_image = "${var.deployment_image}"
-
-
-
-    env_vars = {
-        mysql_user     = "fuchicorp-user"
-        mysql_host     = "nextcloud-mysql"
-        mysql_database = "nextcloud-db"
-        mysql_password = "password"
-    }
-
+    mysql_user       = "fuchicorp-user"
+    mysql_host       = "nextcloud-mysql"
+    mysql_database   = "nextcloud-db"
+    mysql_password   = "password"
   }
-
-    
 }
