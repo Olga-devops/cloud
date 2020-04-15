@@ -1,11 +1,7 @@
   variable "deployment_image" {
     default = "nextcloud"
 }
-
-variable "image_tag" {
-  default = "5.7.27"
   
-}
 
 variable "deployment_environment" {
   default = "dev"
