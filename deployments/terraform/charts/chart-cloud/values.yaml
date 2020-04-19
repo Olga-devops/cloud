@@ -54,6 +54,7 @@ globalEnvironments:
 
   - name: MYSQL_PASSWORD
     value: ${mysql_password}
+  
   - name: MYSQL_HOST
     value: ${mysql_host}
 
