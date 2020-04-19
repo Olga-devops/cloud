@@ -80,8 +80,3 @@ imagePullSecrets:
   enabled: true
   allSecrets:
   - name: nexus-creds
-
-  
-  
-  
-  
