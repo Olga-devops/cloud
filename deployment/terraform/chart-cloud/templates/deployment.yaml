@@ -21,17 +21,22 @@ spec:
     spec:
 {{- if .Values.imagePullSecrets.enabled }}
       imagePullSecrets:
-{{ toYaml .Values.imagePullSecrets.allSecrets | indent 12 }}
+{{ toYaml .Values.imagePullSecrets.allSecrets | indent 8 }}
 {{- end }}
-
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 7106
-              protocol: TCP
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.globalEnvironments.enabled }}
+        env:
+{{ toYaml .Values.globalEnvironments.environments | indent 8 }}
+        - name: MYSQL_HOST
+          value: {{ .Values.mysql.service.serviceName }}
+{{- end }}
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
           # livenessProbe:
            #httpGet:
               #path: /
@@ -40,8 +45,8 @@ spec:
             #httpGet:
               #path: /
               #port: http
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
+#           resources:
+# {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

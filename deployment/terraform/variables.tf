@@ -1,27 +1,27 @@
 variable "name" {
-  default = "chart-cloud"
+  default = "mysql"
 }
+
 variable "chart" {
-    default = "./chart-cloud"
-  
+  default = "./mysql"
 }
+
 variable "version" {
-    default = "6.0.1"
-  
+  default = "6.0.1"
 }
+
 variable "docker_image" {
-  default = "nextcloud"
-  
+  default = "mysql"
 }
+
 variable "docker_image_tag" {
   default = "latest"
-  
 }
+
 variable "domain_name" {
-  default = "test-cloud.fuchicorp.com"
-  
+  default = "mysql.fuchicorp.com"
 }
+
 variable "namespace" {
   default = "test"
 }
-

@@ -1,21 +1,24 @@
 # Default values for chart-cloud.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
-
 image:
-  repository: ${docker_image}
-  tag: ${docker_image_tag}
+  repository: nextcloud 
   pullPolicy: Always
-
+mysql:
+  image:
+    repository: fsadykov/centos_mysql
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3306
+    serviceName: academy-mysql-service
 nameOverride: ""
 fullnameOverride: ""
-
 service:
   type: ClusterIP
   port: 80
-  targetPort: 7106
+  # targetPort: 7106
 ingress:
   enabled: true
   annotations: 
@@ -24,12 +27,11 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - test-cloud.fuchicorp.com
+    - cloud.devops-chicago.com
   tls: 
     - secretName: letsencrypt-sec-cloud
       hosts:
-       - test-cloud.fuchicorp.com
-
+       - cloud.devops-chicago.com
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -41,19 +43,21 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
-
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
 imagePullSecrets:
   enabled: true
   allSecrets:
   - name: nexus-creds
+globalEnvironments:
+  enabled: true
+  environments:
+  - name: MYSQL_USER
+    value: admin
+  - name: MYSQL_DATABASE
+    value: adminDb
+  - name: MYSQL_PASSWORD
+    value: adminPassword
+       
 
-  
-  
-  
-  
